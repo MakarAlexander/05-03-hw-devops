@@ -218,6 +218,47 @@ services:
 
 В качестве ответа приложите скриншоты консоли, где видно все введенные команды и их вывод, файл compose.yaml , скриншот portainer c задеплоенным компоузом.
 
+#### Решение
+При запуске docker compose запустился compose.yaml
+![1-9](./05-03-9.png)
+Отредактировал compose.yaml
+```yaml
+version: "3"
+
+include:
+
+  - docker-compose.yaml
+
+services:
+
+  portainer:
+
+    image: portainer/portainer-ce:latest
+
+    network_mode: host
+
+    ports:
+
+      - "9000:9000"
+
+    volumes:
+
+      - /var/run/docker.sock:/var/run/docker.sock
+```
+
+![1-10](./05-03-10.png)
+
+![1-11](./05-03-11.png)
+
+![1-12](./05-03-12.png)
+
+![1-13](./05-03-13.png)
+
+После удаления манифеста мы получили предупреждение: сервисы, запущенные через docker compose, отличаются от тех, что находятся в текущем манифесте. Нам предлагают или исправить проблему с файлом или удалить лишние контейнеры, которые отсутствуют в текущем манифесте.
+```sh
+ docker compose down --remove-orphans
+```
+
 ---
 
 ### Правила приема
